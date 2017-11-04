@@ -21,7 +21,7 @@ use ClockTime;
 use glib;
 use glib_ffi;
 use ffi;
-use glib::translate::{from_glib, from_glib_full};
+use glib::translate::{from_glib, from_glib_full, ToGlib};
 
 pub struct Readable;
 pub struct Writable;
@@ -317,27 +317,27 @@ impl BufferRef {
     }
 
     pub fn get_pts(&self) -> ClockTime {
-        self.0.pts
+        from_glib(self.0.pts)
     }
 
     pub fn set_pts(&mut self, pts: ClockTime) {
-        self.0.pts = pts;
+        self.0.pts = pts.to_glib();
     }
 
     pub fn get_dts(&self) -> ClockTime {
-        self.0.dts
+        from_glib(self.0.dts)
     }
 
     pub fn set_dts(&mut self, dts: ClockTime) {
-        self.0.dts = dts;
+        self.0.dts = dts.to_glib();
     }
 
     pub fn get_duration(&self) -> ClockTime {
-        self.0.duration
+        from_glib(self.0.duration)
     }
 
     pub fn set_duration(&mut self, duration: ClockTime) {
-        self.0.duration = duration;
+        self.0.duration = duration.to_glib();
     }
 
     pub fn get_flags(&self) -> BufferFlags {

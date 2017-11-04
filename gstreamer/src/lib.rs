@@ -102,6 +102,7 @@ mod iterator;
 mod device_provider;
 mod parse_context;
 mod enums;
+mod clock_time;
 pub use object::GstObjectExtManual;
 pub use element::{ElementExtManual, ElementMessageType, NotifyWatchId};
 pub use element::{ELEMENT_METADATA_AUTHOR, ELEMENT_METADATA_DESCRIPTION, ELEMENT_METADATA_DOC_URI,
@@ -117,6 +118,7 @@ pub use parse_context::ParseContext;
 #[cfg(feature = "futures")]
 pub use bus::BusStream;
 pub use enums::{StateChangeSuccess, StateChangeError};
+pub use clock_time::ClockTime;
 
 mod value;
 pub use value::*;
@@ -151,12 +153,12 @@ pub fn init() -> Result<(), glib::Error> {
 }
 
 pub const BUFFER_OFFSET_NONE: u64 = ffi::GST_BUFFER_OFFSET_NONE;
-pub const CLOCK_TIME_NONE: ClockTime = ffi::GST_CLOCK_TIME_NONE;
+pub const CLOCK_TIME_NONE: ClockTime = ClockTime(None);
 
-pub const SECOND: ClockTime = 1_000_000_000;
-pub const MSECOND: ClockTime = 1_000_000;
-pub const USECOND: ClockTime = 1_000;
-pub const NSECOND: ClockTime = 1;
+pub const SECOND: ClockTime = ClockTime(Some(1_000_000_000));
+pub const MSECOND: ClockTime = ClockTime(Some(1_000_000));
+pub const USECOND: ClockTime = ClockTime(Some(1_000));
+pub const NSECOND: ClockTime = ClockTime(Some(1));
 
 // Re-export all the traits in a prelude module, so that applications
 // can always "use gst::prelude::*" without getting conflicts

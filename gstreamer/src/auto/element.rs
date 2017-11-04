@@ -236,7 +236,7 @@ impl<O: IsA<Element> + IsA<glib::object::Object>> ElementExt for O {
 
     fn get_base_time(&self) -> ClockTime {
         unsafe {
-            ffi::gst_element_get_base_time(self.to_glib_none().0)
+            from_glib(ffi::gst_element_get_base_time(self.to_glib_none().0))
         }
     }
 
@@ -292,7 +292,7 @@ impl<O: IsA<Element> + IsA<glib::object::Object>> ElementExt for O {
 
     fn get_start_time(&self) -> ClockTime {
         unsafe {
-            ffi::gst_element_get_start_time(self.to_glib_none().0)
+            from_glib(ffi::gst_element_get_start_time(self.to_glib_none().0))
         }
     }
 
@@ -300,7 +300,7 @@ impl<O: IsA<Element> + IsA<glib::object::Object>> ElementExt for O {
         unsafe {
             let mut state = mem::uninitialized();
             let mut pending = mem::uninitialized();
-            let ret = from_glib(ffi::gst_element_get_state(self.to_glib_none().0, &mut state, &mut pending, timeout));
+            let ret = from_glib(ffi::gst_element_get_state(self.to_glib_none().0, &mut state, &mut pending, timeout.to_glib()));
             (ret, from_glib(state), from_glib(pending))
         }
     }
@@ -472,7 +472,7 @@ impl<O: IsA<Element> + IsA<glib::object::Object>> ElementExt for O {
 
     fn set_base_time(&self, time: ClockTime) {
         unsafe {
-            ffi::gst_element_set_base_time(self.to_glib_none().0, time);
+            ffi::gst_element_set_base_time(self.to_glib_none().0, time.to_glib());
         }
     }
 
@@ -502,7 +502,7 @@ impl<O: IsA<Element> + IsA<glib::object::Object>> ElementExt for O {
 
     fn set_start_time(&self, time: ClockTime) {
         unsafe {
-            ffi::gst_element_set_start_time(self.to_glib_none().0, time);
+            ffi::gst_element_set_start_time(self.to_glib_none().0, time.to_glib());
         }
     }
 
