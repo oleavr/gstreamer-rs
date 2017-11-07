@@ -474,17 +474,17 @@ mod tests {
 
         {
             let buffer = buffer.get_mut().unwrap();
-            buffer.set_pts(1);
-            buffer.set_dts(2);
+            buffer.set_pts(1.into());
+            buffer.set_dts(2.into());
             buffer.set_offset(3);
             buffer.set_offset_end(4);
-            buffer.set_duration(5);
+            buffer.set_duration(5.into());
         }
-        assert_eq!(buffer.get_pts(), 1);
-        assert_eq!(buffer.get_dts(), 2);
+        assert_eq!(buffer.get_pts(), 1.into());
+        assert_eq!(buffer.get_dts(), 2.into());
         assert_eq!(buffer.get_offset(), 3);
         assert_eq!(buffer.get_offset_end(), 4);
-        assert_eq!(buffer.get_duration(), 5);
+        assert_eq!(buffer.get_duration(), 5.into());
     }
 
     #[test]

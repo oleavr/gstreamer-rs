@@ -211,7 +211,7 @@ mod tests {
 
         let clock = SystemClock::obtain();
         let now = clock.get_time();
-        let id = clock.new_single_shot_id(now + 20_000_000).unwrap();
+        let id = clock.new_single_shot_id(now + 20 * ::MSECOND).unwrap();
         let (res, _) = id.wait();
 
         assert!(res == ClockReturn::Ok || res == ClockReturn::Early);
@@ -225,7 +225,7 @@ mod tests {
 
         let clock = SystemClock::obtain();
         let now = clock.get_time();
-        let id = clock.new_single_shot_id(now + 20_000_000).unwrap();
+        let id = clock.new_single_shot_id(now + 20 * ::MSECOND).unwrap();
         let res = id.wait_async(move |_, _, _| {
             sender.send(()).unwrap();
 
