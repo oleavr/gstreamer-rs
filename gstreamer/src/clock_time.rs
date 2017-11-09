@@ -10,6 +10,7 @@ use std::ops;
 use ffi;
 use glib::translate::*;
 use std::fmt;
+use muldiv::MulDiv;
 
 #[derive(PartialEq, Eq, PartialOrd, Ord, Hash, Clone, Copy, Debug, Default)]
 pub struct ClockTime(pub Option<u64>);
@@ -50,12 +51,6 @@ impl From<u64> for ClockTime {
     }
 }
 
-impl From<i64> for ClockTime {
-    fn from(v: i64) -> ClockTime {
-        from_glib(v as u64)
-    }
-}
-
 impl From<Option<u64>> for ClockTime {
     fn from(v: Option<u64>) -> ClockTime {
         ClockTime(v)
@@ -65,12 +60,6 @@ impl From<Option<u64>> for ClockTime {
 impl Into<u64> for ClockTime {
     fn into(self) -> u64 {
         self.to_glib()
-    }
-}
-
-impl Into<i64> for ClockTime {
-    fn into(self) -> i64 {
-        self.to_glib() as i64
     }
 }
 
@@ -247,5 +236,78 @@ impl FromGlib<ffi::GstClockTime> for ClockTime {
             ffi::GST_CLOCK_TIME_NONE => ClockTime(None),
             value => ClockTime(Some(value)),
         }
+    }
+}
+
+impl MulDiv<ClockTime> for ClockTime {
+    type Output = ClockTime;
+
+    fn mul_div_floor(self, num: ClockTime, denom: ClockTime) -> Option<Self::Output> {
+        match (self.0, num.0, denom.0) {
+            (Some(s), Some(n), Some(d)) => s.mul_div_floor(n, d).map(ClockTime::new),
+            _ => Some(ClockTime(None)),
+        }
+    }
+
+    fn mul_div_round(self, num: ClockTime, denom: ClockTime) -> Option<Self::Output> {
+        match (self.0, num.0, denom.0) {
+            (Some(s), Some(n), Some(d)) => s.mul_div_round(n, d).map(ClockTime::new),
+            _ => Some(ClockTime(None)),
+        }
+    }
+
+    fn mul_div_ceil(self, num: ClockTime, denom: ClockTime) -> Option<Self::Output> {
+        match (self.0, num.0, denom.0) {
+            (Some(s), Some(n), Some(d)) => s.mul_div_ceil(n, d).map(ClockTime::new),
+            _ => Some(ClockTime(None)),
+        }
+    }
+}
+
+impl<'a> MulDiv<&'a ClockTime> for ClockTime {
+    type Output = ClockTime;
+
+    fn mul_div_floor(self, num: &ClockTime, denom: &ClockTime) -> Option<Self::Output> {
+        self.mul_div_floor(*num, *denom)
+    }
+
+    fn mul_div_round(self, num: &ClockTime, denom: &ClockTime) -> Option<Self::Output> {
+        self.mul_div_round(*num, *denom)
+    }
+
+    fn mul_div_ceil(self, num: &ClockTime, denom: &ClockTime) -> Option<Self::Output> {
+        self.mul_div_ceil(*num, *denom)
+    }
+}
+
+impl<'a> MulDiv<u64> for ClockTime {
+    type Output = ClockTime;
+
+    fn mul_div_floor(self, num: u64, denom: u64) -> Option<Self::Output> {
+        self.mul_div_floor(ClockTime::from(num), ClockTime::from(denom))
+    }
+
+    fn mul_div_round(self, num: u64, denom: u64) -> Option<Self::Output> {
+        self.mul_div_round(ClockTime::from(num), ClockTime::from(denom))
+    }
+
+    fn mul_div_ceil(self, num: u64, denom: u64) -> Option<Self::Output> {
+        self.mul_div_ceil(ClockTime::from(num), ClockTime::from(denom))
+    }
+}
+
+impl<'a> MulDiv<&'a u64> for ClockTime {
+    type Output = ClockTime;
+
+    fn mul_div_floor(self, num: &u64, denom: &u64) -> Option<Self::Output> {
+        self.mul_div_floor(*num, *denom)
+    }
+
+    fn mul_div_round(self, num: &u64, denom: &u64) -> Option<Self::Output> {
+        self.mul_div_round(*num, *denom)
+    }
+
+    fn mul_div_ceil(self, num: &u64, denom: &u64) -> Option<Self::Output> {
+        self.mul_div_ceil(*num, *denom)
     }
 }

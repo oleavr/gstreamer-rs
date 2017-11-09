@@ -25,6 +25,8 @@ extern crate num_rational;
 #[cfg(feature = "futures")]
 extern crate futures;
 
+extern crate muldiv;
+
 use glib::translate::{from_glib, from_glib_full};
 
 macro_rules! callback_guard {
@@ -103,6 +105,7 @@ mod device_provider;
 mod parse_context;
 mod enums;
 mod clock_time;
+mod format;
 pub use object::GstObjectExtManual;
 pub use element::{ElementExtManual, ElementMessageType, NotifyWatchId};
 pub use element::{ELEMENT_METADATA_AUTHOR, ELEMENT_METADATA_DESCRIPTION, ELEMENT_METADATA_DOC_URI,
@@ -119,6 +122,7 @@ pub use parse_context::ParseContext;
 pub use bus::BusStream;
 pub use enums::{StateChangeSuccess, StateChangeError};
 pub use clock_time::ClockTime;
+pub use format::FormatValue;
 
 mod value;
 pub use value::*;
@@ -160,6 +164,9 @@ pub const MSECOND: ClockTime = ClockTime(Some(1_000_000));
 pub const USECOND: ClockTime = ClockTime(Some(1_000));
 pub const NSECOND: ClockTime = ClockTime(Some(1));
 
+pub const FORMAT_PERCENT_MAX: u32 = ffi::GST_FORMAT_PERCENT_MAX as u32;
+pub const FORMAT_PERCENT_SCALE: u32 = ffi::GST_FORMAT_PERCENT_SCALE as u32;
+
 // Re-export all the traits in a prelude module, so that applications
 // can always "use gst::prelude::*" without getting conflicts
 pub mod prelude {
@@ -180,6 +187,8 @@ pub mod prelude {
 
     pub use tags::Tag;
     pub use miniobject::MiniObject;
+
+    pub use muldiv::MulDiv;
 }
 
 mod utils;
