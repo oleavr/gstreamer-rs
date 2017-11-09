@@ -56,7 +56,7 @@ fn main() {
                         .playbin
                         .query_position(gst::Format::Time)
                         .expect("Could not query current position.");
-                    let position: gst::ClockTime = position.into();
+                    let position = position.to_time().unwrap();
 
                     // If we didn't know it yet, query the stream duration
                     if custom_data.duration == gst::CLOCK_TIME_NONE {
@@ -64,7 +64,8 @@ fn main() {
                             .playbin
                             .query_duration(gst::Format::Time)
                             .expect("Could not query current duration.")
-                            .into();
+                            .to_time()
+                            .unwrap();
                     }
 
                     // Print current position and total duration
@@ -78,7 +79,6 @@ fn main() {
                         custom_data
                             .playbin
                             .seek_simple(
-                                gst::Format::Time,
                                 gst::SeekFlags::FLUSH | gst::SeekFlags::KEY_UNIT,
                                 (30 * gst::SECOND).into(),
                             )

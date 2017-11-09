@@ -316,6 +316,31 @@ status = "generate"
     # ulong
     ignore = true
 
+    [[object.function]]
+    name = "query_duration"
+    # formatted value
+    ignore = true
+
+    [[object.function]]
+    name = "query_position"
+    # formatted value
+    ignore = true
+
+    [[object.function]]
+    name = "query_convert"
+    # formatted value
+    ignore = true
+
+    [[object.function]]
+    name = "seek"
+    # formatted value
+    ignore = true
+
+    [[object.function]]
+    name = "seek_simple"
+    # formatted value
+    ignore = true
+
 [[object]]
 name = "Gst.ElementFactory"
 status = "generate"
