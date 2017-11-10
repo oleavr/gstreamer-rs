@@ -129,9 +129,14 @@ fn create_ui(app: &gtk::Application) {
     let pipeline_clone = pipeline.clone();
     gtk::timeout_add(500, move || {
         let pipeline = &pipeline_clone;
-        let position = pipeline.query_position(gst::Format::Time);
-        let position = position.map(gst::ClockTime::from).unwrap_or(Default::default());
-        label.set_text(&format!("Position: {}", position));
+        let position = if let Some(gst::FormatValue::Time(position)) =
+            pipeline.query_position(gst::Format::Time)
+        {
+            position
+        } else {
+            0.into()
+        };
+        label.set_text(&format!("Position: {:.0}", position));
 
         glib::Continue(true)
     });

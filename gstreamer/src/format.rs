@@ -53,6 +53,34 @@ impl FormatValue {
         }
     }
 
+    pub fn from_undefined(v: i64) -> Self {
+        FormatValue::Undefined(v)
+    }
+
+    pub fn from_default(v: Option<u64>) -> Self {
+        FormatValue::Default(v)
+    }
+
+    pub fn from_bytes(v: Option<u64>) -> Self {
+        FormatValue::Bytes(v)
+    }
+
+    pub fn from_time(v: ClockTime) -> Self {
+        FormatValue::Time(v)
+    }
+
+    pub fn from_buffers(v: Option<u64>) -> Self {
+        FormatValue::Buffers(v)
+    }
+
+    pub fn from_percent(v: Option<u32>) -> Self {
+        FormatValue::Percent(v)
+    }
+
+    pub fn from_other(format: Format, v: i64) -> Self {
+        FormatValue::Other(format, v)
+    }
+
     pub fn to_format(&self) -> Format {
         match *self {
             FormatValue::Undefined(_) => Format::Undefined,
@@ -77,9 +105,57 @@ impl FormatValue {
         }
     }
 
-    pub fn to_time(&self) -> Option<ClockTime> {
+    pub fn try_to_undefined(&self) -> Option<i64> {
+        if let FormatValue::Undefined(v) = *self {
+            Some(v)
+        } else {
+            None
+        }
+    }
+
+    pub fn try_to_default(&self) -> Option<Option<u64>> {
+        if let FormatValue::Default(v) = *self {
+            Some(v)
+        } else {
+            None
+        }
+    }
+
+    pub fn try_to_bytes(&self) -> Option<Option<u64>> {
+        if let FormatValue::Bytes(v) = *self {
+            Some(v)
+        } else {
+            None
+        }
+    }
+
+    pub fn try_to_time(&self) -> Option<ClockTime> {
         if let FormatValue::Time(v) = *self {
             Some(v)
+        } else {
+            None
+        }
+    }
+
+    pub fn try_to_buffers(&self) -> Option<Option<u64>> {
+        if let FormatValue::Buffers(v) = *self {
+            Some(v)
+        } else {
+            None
+        }
+    }
+
+    pub fn try_to_percent(&self) -> Option<Option<u32>> {
+        if let FormatValue::Percent(v) = *self {
+            Some(v)
+        } else {
+            None
+        }
+    }
+
+    pub fn try_to_other(&self) -> Option<(Format, i64)> {
+        if let FormatValue::Other(f, v) = *self {
+            Some((f, v))
         } else {
             None
         }

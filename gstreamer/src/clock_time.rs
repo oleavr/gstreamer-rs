@@ -9,7 +9,7 @@
 use std::ops;
 use ffi;
 use glib::translate::*;
-use std::fmt;
+use std::{cmp, fmt};
 use muldiv::MulDiv;
 
 #[derive(PartialEq, Eq, PartialOrd, Ord, Hash, Clone, Copy, Debug, Default)]
@@ -97,8 +97,10 @@ impl AsMut<Option<u64>> for ClockTime {
 
 impl fmt::Display for ClockTime {
     fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
-        // TODO: f.precision()
-        match self.0 {
+        let precision = f.precision().unwrap_or(9);
+        // TODO: Could also check width and pad the hours as needed
+
+        let (h, m, s, ns) = match self.0 {
             Some(v) => {
                 let mut s = v / 1_000_000_000;
                 let mut m = s / 60;
@@ -107,9 +109,28 @@ impl fmt::Display for ClockTime {
                 m %= 60;
                 let ns = v % 1_000_000_000;
 
-                f.write_fmt(format_args!("{}:{:02}:{:02}.{:09}", h, m, s, ns))
+                (h, m, s, ns)
             }
-            None => f.write_str("99:99:99:999999999"),
+            None => (99, 99, 99, 999_999_999),
+        };
+
+        if precision == 0 {
+            f.write_fmt(format_args!("{:02}:{:02}:{:02}", h, m, s))
+        } else {
+            let mut divisor = 1;
+            let precision = cmp::max(precision, 9);
+            for _ in 0..(9 - precision) {
+                divisor *= 10;
+            }
+
+            f.write_fmt(format_args!(
+                "{:02}:{:02}:{:02}.{:0width$}",
+                h,
+                m,
+                s,
+                ns / divisor,
+                width = precision
+            ))
         }
     }
 }
