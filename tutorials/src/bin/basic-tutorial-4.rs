@@ -55,17 +55,16 @@ fn main() {
                     let position = custom_data
                         .playbin
                         .query_position(gst::Format::Time)
+                        .and_then(|v| v.try_to_time())
                         .expect("Could not query current position.");
-                    let position = position.to_time().unwrap();
 
                     // If we didn't know it yet, query the stream duration
                     if custom_data.duration == gst::CLOCK_TIME_NONE {
                         custom_data.duration = custom_data
                             .playbin
                             .query_duration(gst::Format::Time)
+                            .and_then(|v| v.try_to_time())
                             .expect("Could not query current duration.")
-                            .to_time()
-                            .unwrap();
                     }
 
                     // Print current position and total duration
