@@ -1,0 +1,20 @@
+[options]
+girs_dir = "gir-files"
+library = "GstSdp"
+version = "1.0"
+min_cfg_version = "1.12"
+target_path = "gstreamer-sdp"
+work_mode = "normal"
+concurrency = "send+sync"
+generate_safety_asserts = true
+
+external_libraries = [
+    "GLib",
+    "GObject",
+]
+
+generate = [
+]
+
+manual = [
+]

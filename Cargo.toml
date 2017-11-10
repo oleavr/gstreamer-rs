@@ -6,6 +6,7 @@ members = [
   "gstreamer-audio",
   "gstreamer-base",
   "gstreamer-player",
+  "gstreamer-sdp",
   "gstreamer-video",
   "examples",
   "tutorials",
