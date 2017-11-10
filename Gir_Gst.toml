@@ -70,6 +70,7 @@ generate = [
     "Gst.DebugGraphDetails",
     "Gst.ParseFlags",
     "Gst.TaskState",
+    "Gst.PromiseResult",
 ]
 
 manual = [
@@ -750,3 +751,8 @@ must_use = true
 name = "Gst.ClockReturn"
 status = "generate"
 must_use = true
+
+[[object]]
+name = "Gst.Promise"
+status = "manual"
+ref_mode = "ref"

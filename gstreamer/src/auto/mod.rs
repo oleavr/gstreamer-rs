@@ -117,6 +117,7 @@ pub use self::enums::PadProbeReturn;
 pub use self::enums::ParseError;
 pub use self::enums::PluginError;
 pub use self::enums::ProgressType;
+pub use self::enums::PromiseResult;
 pub use self::enums::QOSType;
 pub use self::enums::Rank;
 pub use self::enums::ResourceError;
