@@ -1,0 +1,35 @@
+[package]
+name = "gstreamer-webrtc"
+version = "0.9.0"
+authors = ["Ole André Vadla Ravnås <oleavr@gmail.com>"]
+categories = ["api-bindings", "multimedia"]
+description = "Rust bindings for GStreamer WebRTC library"
+repository = "https://github.com/sdroege/gstreamer-rs"
+license = "MIT/Apache-2.0"
+readme = "README.md"
+homepage = "https://gstreamer.freedesktop.org"
+documentation = "https://sdroege.github.io/rustdoc/gstreamer/gstreamer_webrtc"
+keywords = ["gstreamer", "multimedia", "audio", "video", "gnome"]
+build = "build.rs"
+
+[dependencies]
+bitflags = "1.0"
+libc = "0.2"
+glib-sys = { git = "https://github.com/gtk-rs/sys" }
+gobject-sys = { git = "https://github.com/gtk-rs/sys" }
+gstreamer-webrtc-sys = { git = "https://github.com/oleavr/gstreamer-sys", features = [] }
+glib = { git = "https://github.com/gtk-rs/glib" }
+gstreamer = { path = "../gstreamer", features = ["v1_12"] }
+
+[build-dependencies.rustdoc-stripper]
+version = "0.1"
+optional = true
+
+[features]
+embed-lgpl-docs = ["rustdoc-stripper"]
+purge-lgpl-docs = ["rustdoc-stripper"]
+dox = ["gstreamer-webrtc-sys/dox"]
+default-features = []
+
+[badges]
+travis-ci = { repository = "sdroege/gstreamer-rs", branch = "master" }

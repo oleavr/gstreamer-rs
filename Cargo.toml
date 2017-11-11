@@ -8,6 +8,7 @@ members = [
   "gstreamer-player",
   "gstreamer-sdp",
   "gstreamer-video",
+  "gstreamer-webrtc",
   "examples",
   "tutorials",
 ]
